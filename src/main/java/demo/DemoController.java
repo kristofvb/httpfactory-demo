@@ -16,8 +16,14 @@ public class DemoController {
     @Client("https://www.vrt.be")
     private RxHttpClient client;
 
+    @Get(value = "/plain", produces = MediaType.TEXT_HTML)
+    String doGet() {
+        client.toBlocking().retrieve("/");
+        return "some body";
+    }
+
     @Get(produces = MediaType.TEXT_HTML)
-    HttpResponse<String> doGet() {
+    HttpResponse<String> doGetResponse() {
         client.toBlocking().retrieve("/");
         return HttpResponse.ok("some body");
     }
