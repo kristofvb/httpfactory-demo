@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: API
+Globals:
+  Api:
+    EndpointConfiguration: REGIONAL
+
+Resources:
+  ServerlessRestApi:
+    Type: AWS::Serverless::Api
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: io.micronaut.function.aws.proxy.MicronautLambdaHandler
+      Runtime: java11
+      CodeUri: target/httpfactory-demo-0.1.jar
+      MemorySize: 512
+      Policies: AWSLambdaVPCAccessExecutionRole
+      Timeout: 30
+      AutoPublishAlias: live
+      Events:
+        ApiEndpoint:
+          Type: Api
+          Properties:
+            Path: /
+            Method: any
